@@ -29,4 +29,4 @@ docker exec -i [mysql_container_name] mysql -u[username] -p[password] [DB name] 
 ```
 
 # [Show more docker](https://docs.docker.com/get-started/)
-# [Form docker hub](https://hub.docker.com/)
+# [Docker hub](https://hub.docker.com/)
