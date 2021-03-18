@@ -1,0 +1,97 @@
+version: "3.5"
+
+services:
+  #Blog Service
+  blog:
+    build:
+      context: ./blog
+      dockerfile: ./Dockerfile
+    image: blog
+    container_name: blog
+    working_dir: /var/www/blog
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - blog-volume:/var/www/blog
+
+      # Remove the below line if you want to use your own vendor directory
+      - /var/www/blog/vendor
+
+      - ./blog/blog.ini:/usr/local/etc/php/conf.d/blog.ini
+    networks:
+      - pinggo-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - blog-volume:/var/www/blog
+    networks:
+      - blog-network
+
+  #MySQL Service
+  mysql:
+    image: mysql:5.7
+    platform: linux/x86_64
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql/
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
+    environment:
+      MYSQL_DATABASE: blogdb
+      MYSQL_USER: hunghd
+      MYSQL_PASSWORD: hunghddz
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - blog-network
+
+  #Redis Service
+  redis:
+    image: redis:5.0.12
+    container_name: redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    tty: true
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - blog-network
+
+#Docker Networks
+networks:
+  blog-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  mysqldata:
+    driver: local
+  redisdata:
+    driver: local
+  blog-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $PWD/blog
