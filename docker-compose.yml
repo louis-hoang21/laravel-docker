@@ -19,7 +19,7 @@ services:
 
       - ./blog/blog.ini:/usr/local/etc/php/conf.d/blog.ini
     networks:
-      - pinggo-network
+      - blog-network
 
   #Nginx Service
   webserver:
