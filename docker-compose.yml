@@ -1,27 +1,7 @@
 version: "3.5"
 
 services:
-  #Blog Service
-  blog:
-    build:
-      context: ./blog
-      dockerfile: ./Dockerfile
-    image: blog
-    container_name: blog
-    working_dir: /var/www/blog
-    restart: unless-stopped
-    tty: true
-    volumes:
-      - blog-volume:/var/www/blog
-
-      # Remove the below line if you want to use your own vendor directory
-      - /var/www/blog/vendor
-
-      - ./blog/blog.ini:/usr/local/etc/php/conf.d/blog.ini
-    networks:
-      - blog-network
-
-  #Nginx Service
+#Nginx Service
   webserver:
     image: nginx:alpine
     container_name: webserver
@@ -75,6 +55,26 @@ services:
       - "6379:6379"
     volumes:
       - redisdata:/data
+    networks:
+      - blog-network
+      
+  #Blog Service
+  blog:
+    build:
+      context: ./blog
+      dockerfile: ./Dockerfile
+    image: blog
+    container_name: blog
+    working_dir: /var/www/blog
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - blog-volume:/var/www/blog
+
+      # Remove the below line if you want to use your own vendor directory
+      - /var/www/blog/vendor
+
+      - ./blog/blog.ini:/usr/local/etc/php/conf.d/blog.ini
     networks:
       - blog-network
 
