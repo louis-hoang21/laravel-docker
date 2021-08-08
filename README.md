@@ -21,6 +21,24 @@ docker ps
 docker exec -i [Container ID] sh/bash
 ```
 
+# Depends_on Express dependency between services => [Detail](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+```
+#Nginx Service
+
+depends_on:
+  - mysql
+```
+
+# Aliases when using multiple services PHP => [Detail](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+```
+#Nginx Service
+
+networks:
+  blog-network:
+    aliases:
+      - api.xyz
+```
+
 # Import MySQL database in Docker
 
 ```
