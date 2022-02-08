@@ -46,5 +46,11 @@ docker ps
 docker exec -i [mysql_container_name] mysql -u[username] -p[password] [DB name] < [path/to/sql/file]
 ```
 
+# Edit file hosts
+
+```
+vim /etc/hosts
+```
+
 # [Show more docker](https://docs.docker.com/get-started/)
 # [Docker hub](https://hub.docker.com/)
