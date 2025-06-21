@@ -48,7 +48,7 @@ docker exec -i [mysql_container_name] mysql -u[username] -p[password] [DB name] 
 
 ```
 Run on windows
- cmd /c "docker exec -i 096184053d2f mysql -uroot -proot petfen_account_service < E:\Code\database\petfen_account_service.sql"
+ cmd /c "docker exec -i [mysql_container_name] mysql -u[username] -p[password] [DB name] < [path/to/sql/file]"
 ```
 
 # Edit file hosts
